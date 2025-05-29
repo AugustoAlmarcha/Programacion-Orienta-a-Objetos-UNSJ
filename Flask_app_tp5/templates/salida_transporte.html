@@ -1,0 +1,33 @@
+{% extends "layout.html" %}
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/salidatransporte.css') }}">
+{% endblock %}
+
+{% block body %}
+<div class="container">
+    <h1>Salida de Transporte desde Sucursal {{ sucursal_id }}</h1>
+
+    {% if error %}
+        <div class="error">{{ error }}</div>
+    {% endif %}
+
+    <form method="POST"><!--si no especificas el atributo action, el formulario se enviará de regreso a la misma URL desde la que se cargó la página-->
+        <label for="idsucursaldestino">Seleccionar Sucursal de Destino:</label>
+        <select name="idsucursaldestino" id="idsucursaldestino" required> <!--<select> (o select box) se usa cuando el usuario debe seleccionar una sola opción de una lista desplegable.-->
+            {% for sucursal in sucursales_destino %}
+                <option value="{{ sucursal.id }}">{{ sucursal.numero }} - {{ sucursal.provincia }} - {{ sucursal.localidad }}</option>
+            {% endfor %}
+        </select>
+
+        <h2>Seleccionar Paquetes para Transporte:</h2>
+        {% for paquete in paquetes %}
+            <label>
+                <input type="checkbox" name="idpaquetes" value="{{ paquete.id }}"> <!--Los checkboxes (<input type="checkbox">) permiten que el usuario seleccione varias opciones simultáneamente.-->
+                Paquete ID: {{ paquete.id }}, Direccion Destinatario: {{ paquete.dirdestinatario }}
+            </label><br>
+        {% endfor %}
+
+        <input type="submit" value="Registrar Transporte">
+    </form>
+</div>
+{% endblock %}
